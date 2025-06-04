@@ -1,3 +1,38 @@
+import { QueryClientRRContext } from '~/query-client-context.client';
+import { Route } from './+types/_._index';
+import * as queryDefs from '~/query-definitions.client';
+import { useQuery } from '@tanstack/react-query';
+
+export async function clientLoader({
+  context,
+  request,
+}: Route.ClientLoaderArgs) {
+  // Preload
+  const queryClient = context.get(QueryClientRRContext);
+  queryClient.prefetchQuery({
+    ...queryDefs.products,
+  });
+  return null;
+}
+
 export default function Component() {
-  return <h1>Hello React Router</h1>;
+  console.log('Fetching');
+  const productsQuery = useQuery(queryDefs.products);
+  return (
+    <div>
+      <h1>Hello React Router</h1>
+      {productsQuery.isLoading && <p>Loading...</p>}
+      {productsQuery.isError && <p>Error: {productsQuery.error.message}</p>}
+      {productsQuery.isSuccess && (
+        <ul>
+          {productsQuery.data.products.map((product) => (
+            <li key={product.id}>
+              <h2>{product.title}</h2>
+              <p>{product.description}</p>
+            </li>
+          ))}
+        </ul>
+      )}
+    </div>
+  );
 }
