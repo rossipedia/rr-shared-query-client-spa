@@ -3,10 +3,7 @@ import { Route } from './+types/_._index';
 import * as queryDefs from '~/query-definitions.client';
 import { useQuery } from '@tanstack/react-query';
 
-export async function clientLoader({
-  context,
-  request,
-}: Route.ClientLoaderArgs) {
+export async function clientLoader({ context }: Route.ClientLoaderArgs) {
   // Preload
   const queryClient = context.get(QueryClientRRContext);
   queryClient.prefetchQuery({
@@ -16,12 +13,11 @@ export async function clientLoader({
 }
 
 export default function Component() {
-  console.log('Fetching');
   const productsQuery = useQuery(queryDefs.products);
   return (
     <div>
       <h1>Hello React Router</h1>
-      {productsQuery.isLoading && <p>Loading...</p>}
+      {productsQuery.isPending && <p>Loading...</p>}
       {productsQuery.isError && <p>Error: {productsQuery.error.message}</p>}
       {productsQuery.isSuccess && (
         <ul>

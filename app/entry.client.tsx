@@ -1,32 +1,33 @@
 import { QueryClient, QueryClientProvider } from '@tanstack/react-query';
 import { startTransition, StrictMode } from 'react';
 import { hydrateRoot } from 'react-dom/client';
+import { unstable_RouterContextProvider } from 'react-router';
 import { HydratedRouter } from 'react-router/dom';
 import { QueryClientRRContext } from './query-client-context.client';
 
-const client = new QueryClient({
-  defaultOptions: {
-    queries: {
-      staleTime: 60_000, // 1 minute
-      gcTime: 300_000, // 5 minutes
-    },
-  },
-});
-
-function AppWithQueryClient() {
-  return (
-    <QueryClientProvider client={client}>
-      <HydratedRouter
-        unstable_getContext={() => new Map([[QueryClientRRContext, client]])}
-      />
-    </QueryClientProvider>
-  );
-}
-
 startTransition(() => {
+  const queryClient = new QueryClient({
+    // ... options
+    defaultOptions: {
+      queries: {
+        staleTime: 1000 * 60 * 5,
+        refetchOnWindowFocus: false,
+      },
+    },
+  });
+
   hydrateRoot(
     document,
-
-    <AppWithQueryClient />
+    <StrictMode>
+      <QueryClientProvider client={queryClient}>
+        <HydratedRouter
+          unstable_getContext={() =>
+            new unstable_RouterContextProvider(
+              new Map([[QueryClientRRContext, queryClient]])
+            )
+          }
+        />
+      </QueryClientProvider>
+    </StrictMode>
   );
 });
