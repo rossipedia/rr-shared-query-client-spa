@@ -1,7 +1,7 @@
 import { QueryClient, QueryClientProvider } from '@tanstack/react-query';
 import { startTransition, StrictMode } from 'react';
 import { hydrateRoot } from 'react-dom/client';
-import { unstable_RouterContextProvider } from 'react-router';
+import { RouterContextProvider } from 'react-router';
 import { HydratedRouter } from 'react-router/dom';
 import { QueryClientRRContext } from './query-client-context.client';
 
@@ -21,8 +21,9 @@ startTransition(() => {
     <StrictMode>
       <QueryClientProvider client={queryClient}>
         <HydratedRouter
-          unstable_getContext={() =>
-            new unstable_RouterContextProvider(
+
+          getContext={() =>
+            new RouterContextProvider(
               new Map([[QueryClientRRContext, queryClient]])
             )
           }
