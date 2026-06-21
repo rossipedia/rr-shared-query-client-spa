@@ -1,19 +1,21 @@
-import { QueryClientRRContext } from "~/query-client-context.client";
-import { Route } from "./+types/_._index";
-import * as queryDefs from "~/query-definitions.client";
-import { useQuery } from "@tanstack/react-query";
+import { useQuery } from '@tanstack/react-query'
+
+import { QueryClientRRContext } from '~/query-client-context.client'
+import * as queryDefs from '~/query-definitions.client'
+
+import { Route } from './+types/_._index'
 
 export async function clientLoader({ context }: Route.ClientLoaderArgs) {
   // Preload
-  const queryClient = context.get(QueryClientRRContext);
-  queryClient.prefetchQuery({
+  const queryClient = context.get(QueryClientRRContext)
+  void queryClient.prefetchQuery({
     ...queryDefs.products,
-  });
-  return null;
+  })
+  return null
 }
 
 export default function Component() {
-  const productsQuery = useQuery(queryDefs.products);
+  const productsQuery = useQuery(queryDefs.products)
   return (
     <div>
       <h1>Hello React Router</h1>
@@ -30,5 +32,5 @@ export default function Component() {
         </ul>
       )}
     </div>
-  );
+  )
 }

@@ -1,5 +1,5 @@
-import { queryOptions } from "@tanstack/react-query";
-import { z } from "zod";
+import { queryOptions } from '@tanstack/react-query'
+import { z } from 'zod'
 
 const ProductsSchema = z.object({
   products: z.array(
@@ -13,20 +13,20 @@ const ProductsSchema = z.object({
   total: z.number(),
   skip: z.number(),
   limit: z.number(),
-});
+})
 
 export const products = queryOptions({
-  queryKey: ["products"],
+  queryKey: ['products'],
   queryFn: async ({ signal }) => {
     return ProductsSchema.parse(
-      await fetch("https://dummyjson.com/products?limit=25", {
+      await fetch('https://dummyjson.com/products?limit=25', {
         signal,
       }).then((res) => {
         if (!res.ok) {
-          throw new Error(`HTTP error! status: ${res.status}`);
+          throw new Error(`HTTP error! status: ${res.status}`)
         }
-        return res.json();
+        return res.json()
       }),
-    );
+    )
   },
-});
+})
