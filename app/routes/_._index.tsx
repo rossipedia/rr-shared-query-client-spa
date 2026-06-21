@@ -1,7 +1,7 @@
-import { QueryClientRRContext } from '~/query-client-context.client';
-import { Route } from './+types/_._index';
-import * as queryDefs from '~/query-definitions.client';
-import { useQuery } from '@tanstack/react-query';
+import { QueryClientRRContext } from "~/query-client-context.client";
+import { Route } from "./+types/_._index";
+import * as queryDefs from "~/query-definitions.client";
+import { useQuery } from "@tanstack/react-query";
 
 export async function clientLoader({ context }: Route.ClientLoaderArgs) {
   // Preload
